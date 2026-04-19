@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>🐤 Fluffy Wanderer — 병아리의 여행</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== TITLE SCREEN ===== -->
+  <div id="screen-title" class="screen active">
+    <div class="title-bg">
+      <div class="cloud cloud1"></div>
+      <div class="cloud cloud2"></div>
+      <div class="cloud cloud3"></div>
+    </div>
+    <div class="title-content">
+      <div class="title-chick">🐤</div>
+      <h1 class="title-name">Fluffy Wanderer</h1>
+      <p class="title-sub">병아리의 한가로운 여행</p>
+      <div class="title-buttons">
+        <button class="btn btn-primary" id="btn-new-game">🌱 새로하기</button>
+        <button class="btn btn-secondary" id="btn-continue" disabled>🌿 이어하기</button>
+      </div>
+      <div class="title-footer">꼭 뭔가를 해야 할 필요는 없어요. 그냥 여기 있으면 돼요 🌸</div>
+    </div>
+  </div>
+
+  <!-- ===== CONFIRM NEW GAME MODAL ===== -->
+  <div id="modal-newgame" class="modal-overlay hidden">
+    <div class="modal-box">
+      <p>새로 시작하면 기존 저장 데이터가 사라져요.<br>정말 새로 시작할까요?</p>
+      <div class="modal-buttons">
+        <button class="btn btn-danger" id="btn-newgame-confirm">새로 시작</button>
+        <button class="btn btn-secondary" id="btn-newgame-cancel">돌아가기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GAME SCREEN ===== -->
+  <div id="screen-game" class="screen">
+
+    <!-- TOP BAR -->
+    <header class="game-header">
+      <div class="header-left">
+        <span class="location-label" id="location-name">🌾 들판</span>
+      </div>
+      <div class="header-center">
+        <span class="time-display" id="time-display">00:00:00</span>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" id="btn-stats" title="통계">📊</button>
+        <button class="icon-btn" id="btn-collect" title="수집">⭐</button>
+        <button class="icon-btn" id="btn-save" title="저장">💾</button>
+        <button class="icon-btn" id="btn-menu" title="메뉴">☰</button>
+      </div>
+    </header>
+
+    <!-- SCENE AREA -->
+    <main class="game-scene" id="game-scene">
+      <!-- background layers -->
+      <div class="scene-bg" id="scene-bg"></div>
+      <div class="scene-middle" id="scene-middle"></div>
+
+      <!-- chick character -->
+      <div class="chick-wrap" id="chick-wrap">
+        <div class="chick" id="chick">🐤</div>
+        <div class="chick-shadow"></div>
+      </div>
+
+      <!-- floating items in scene -->
+      <div class="scene-items" id="scene-items"></div>
+
+      <!-- ambient particles -->
+      <div class="particles" id="particles"></div>
+    </main>
+
+    <!-- BOTTOM BAR -->
+    <footer class="game-footer">
+      <div class="footer-row">
+        <!-- Location buttons -->
+        <div class="location-tabs" id="location-tabs"></div>
+      </div>
+      <div class="footer-row footer-status">
+        <div class="stat-pill">🌟 <span id="stat-seeds">0</span> 씨앗</div>
+        <div class="stat-pill">🎵 <span id="stat-songs">0</span> 노래</div>
+        <div class="stat-pill">🗺️ <span id="stat-places">1</span> 장소</div>
+        <div class="sound-toggle">
+          <button class="icon-btn" id="btn-sound" title="소리">🔔</button>
+        </div>
+      </div>
+    </footer>
+
+  </div><!-- /.screen-game -->
+
+  <!-- ===== STATS PANEL ===== -->
+  <div id="panel-stats" class="side-panel hidden">
+    <div class="panel-header">
+      <span>📊 여행 기록</span>
+      <button class="close-btn" data-close="panel-stats">✕</button>
+    </div>
+    <div class="panel-body" id="stats-body"></div>
+  </div>
+
+  <!-- ===== COLLECT PANEL ===== -->
+  <div id="panel-collect" class="side-panel hidden">
+    <div class="panel-header">
+      <span>⭐ 수집품</span>
+      <button class="close-btn" data-close="panel-collect">✕</button>
+    </div>
+    <div class="panel-body" id="collect-body"></div>
+  </div>
+
+  <!-- ===== MENU PANEL ===== -->
+  <div id="panel-menu" class="side-panel hidden">
+    <div class="panel-header">
+      <span>☰ 메뉴</span>
+      <button class="close-btn" data-close="panel-menu">✕</button>
+    </div>
+    <div class="panel-body">
+      <button class="menu-item" id="menu-save">💾 저장하기</button>
+      <button class="menu-item" id="menu-title">🏠 타이틀로</button>
+      <button class="menu-item danger" id="menu-reset">🗑️ 처음부터</button>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- ===== PANEL BACKDROP ===== -->
+  <div id="panel-backdrop" class="panel-backdrop hidden"></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
