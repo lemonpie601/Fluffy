@@ -20,21 +20,21 @@ const EVOLVE_INTERVAL = 6 * 60;
 
 const LOCATIONS = [
   { id:'field',  name:'🌾 들판',   emoji:'🌾', unlockSeeds:0,     items:['🌸','🌼','🍀','🌿','🌱','🦋','🐛','🌻'], particles:['🍃','✨','🌸'], seedRate:1.0, moveMode:'wander',  desc:'따사로운 햇살 아래 넓은 들판' },
-  { id:'lake',   name:'💧 연못',   emoji:'💧', unlockSeeds:300,   items:['🐸','🐟','🪷','🌊','🦆','🐚','🪸'],       particles:['💧','🫧','✨'], seedRate:1.6, moveMode:'drift',   desc:'반짝이는 연못가에서 쉬는 시간' },
-  { id:'forest', name:'🌲 숲',     emoji:'🌲', unlockSeeds:1200,  items:['🍄','🦔','🐿️','🌰','🍂','🦉','🐞'],     particles:['🍃','🌿','✨'], seedRate:2.2, moveMode:'patrol',  desc:'조용하고 신비로운 숲 속' },
-  { id:'sunset', name:'🌅 노을',   emoji:'🌅', unlockSeeds:5000,  items:['🌅','🌄','☁️','🦅','🌙','🌟','🎑'],      particles:['✨','🌟','🧡'], seedRate:3.0, moveMode:'circle',  desc:'온 세상이 주황빛으로 물드는 시간' },
-  { id:'night',  name:'🌙 밤하늘', emoji:'🌙', unlockSeeds:20000, items:['⭐','🌙','🌠','🦉','🔮','🫧','🌌'],       particles:['⭐','✨','🌙'], seedRate:4.2, moveMode:'figure8', desc:'별이 쏟아지는 고요한 밤' },
+  { id:'lake',   name:'💧 연못',   emoji:'💧', unlockSeeds:50,   items:['🐸','🐟','🪷','🌊','🦆','🐚','🪸'],       particles:['💧','🫧','✨'], seedRate:1.6, moveMode:'drift',   desc:'반짝이는 연못가에서 쉬는 시간' },
+  { id:'forest', name:'🌲 숲',     emoji:'🌲', unlockSeeds:120,  items:['🍄','🦔','🐿️','🌰','🍂','🦉','🐞'],     particles:['🍃','🌿','✨'], seedRate:2.2, moveMode:'patrol',  desc:'조용하고 신비로운 숲 속' },
+  { id:'sunset', name:'🌅 노을',   emoji:'🌅', unlockSeeds:180,  items:['🌅','🌄','☁️','🦅','🌙','🌟','🎑'],      particles:['✨','🌟','🧡'], seedRate:3.0, moveMode:'circle',  desc:'온 세상이 주황빛으로 물드는 시간' },
+  { id:'night',  name:'🌙 밤하늘', emoji:'🌙', unlockSeeds:250, items:['⭐','🌙','🌠','🦉','🔮','🫧','🌌'],       particles:['⭐','✨','🌙'], seedRate:4.2, moveMode:'figure8', desc:'별이 쏟아지는 고요한 밤' },
 ];
 
 /* 상점: 씨앗 직접 지급 아이템 없음. 업그레이드/버프 위주 */
 const SHOP_ITEMS = [
-  { id:'speedup',      icon:'💨', name:'바람개비',        desc:'병아리가 더 활발하게 돌아다녀요', effect:'이동 속도 +20%',              cost:80,   type:'upgrade', maxOwn:5,  action:(s)=>{ s.speedBonus=(s.speedBonus||0)+0.2; } },
-  { id:'autoplus',     icon:'⚙️', name:'자동 수확기',     desc:'자동 씨앗 획득량이 늘어나요',     effect:'자동 +1개/3분 (중복가능)',    cost:200,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.autoBonus=(s.autoBonus||0)+1; } },
-  { id:'gauge_boost',  icon:'⚡', name:'게이지 가속제',   desc:'병아리 진화 게이지 즉시 증가',    effect:'게이지 +10% 즉시',            cost:300,  type:'consume',           action:(s)=>{ s.evolveGauge=Math.min(0.99,(s.evolveGauge||0)+0.1); } },
-  { id:'lucky_clover', icon:'🍀', name:'네잎클로버',      desc:'수집품 드롭 확률 2배!',           effect:'수집 확률 ×2 (120초)',        cost:400,  type:'consume',           action:(s)=>{ s.luckyActive=(s.luckyActive||0)+120; } },
-  { id:'magnet',       icon:'🧲', name:'씨앗 자석',       desc:'아이템 터치 보너스 씨앗 추가',    effect:'아이템 씨앗 +1',              cost:500,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.pickBonus=(s.pickBonus||0)+1; } },
-  { id:'party_hat',    icon:'🎩', name:'파티 모자',        desc:'병아리가 모자를 쓰고 신나해요',   effect:'씨앗 보너스 +10% (영구)',     cost:800,  type:'upgrade', maxOwn:3,  action:(s)=>{ s.partyBonus=(s.partyBonus||0)+0.1; } },
-  { id:'rainbow',      icon:'🌈', name:'무지개 다리',      desc:'특별한 파티클이 생겨요',          effect:'파티클 효과 강화 (영구)',      cost:1500, type:'upgrade', maxOwn:1,  action:(s)=>{ s.rainbowActive=true; } },
+  { id:'speedup',      icon:'💨', name:'바람개비',        desc:'병아리가 더 활발하게 돌아다녀요', effect:'이동 속도 +20%',              cost:30,   type:'upgrade', maxOwn:5,  action:(s)=>{ s.speedBonus=(s.speedBonus||0)+0.2; } },
+  { id:'autoplus',     icon:'⚙️', name:'자동 수확기',     desc:'자동 씨앗 획득량이 늘어나요',     effect:'자동 +1개/3분 (중복가능)',    cost:100,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.autoBonus=(s.autoBonus||0)+1; } },
+  { id:'gauge_boost',  icon:'⚡', name:'게이지 가속제',   desc:'병아리 진화 게이지 즉시 증가',    effect:'게이지 +10% 즉시',            cost:150,  type:'consume',           action:(s)=>{ s.evolveGauge=Math.min(0.99,(s.evolveGauge||0)+0.1); } },
+  { id:'lucky_clover', icon:'🍀', name:'네잎클로버',      desc:'수집품 드롭 확률 2배!',           effect:'수집 확률 ×2 (120초)',        cost:60,  type:'consume',           action:(s)=>{ s.luckyActive=(s.luckyActive||0)+120; } },
+  { id:'magnet',       icon:'🧲', name:'씨앗 자석',       desc:'아이템 터치 보너스 씨앗 추가',    effect:'아이템 씨앗 +1',              cost:50,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.pickBonus=(s.pickBonus||0)+1; } },
+  { id:'party_hat',    icon:'🎩', name:'파티 모자',        desc:'병아리가 모자를 쓰고 신나해요',   effect:'씨앗 보너스 +10% (영구)',     cost:130,  type:'upgrade', maxOwn:3,  action:(s)=>{ s.partyBonus=(s.partyBonus||0)+0.1; } },
+  { id:'rainbow',      icon:'🌈', name:'무지개 다리',      desc:'특별한 파티클이 생겨요',          effect:'파티클 효과 강화 (영구)',      cost:30, type:'upgrade', maxOwn:1,  action:(s)=>{ s.rainbowActive=true; } },
 ];
 
 const COLLECTIBLES = [
