@@ -29,7 +29,7 @@ const LOCATIONS = [
 /* 상점: 씨앗 직접 지급 아이템 없음. 업그레이드/버프 위주 */
 const SHOP_ITEMS = [
   { id:'speedup',      icon:'💨', name:'바람개비',        desc:'병아리가 더 활발하게 돌아다녀요', effect:'이동 속도 +20%',              cost:30,   type:'upgrade', maxOwn:5,  action:(s)=>{ s.speedBonus=(s.speedBonus||0)+0.2; } },
-  { id:'autoplus',     icon:'⚙️', name:'자동 수확기',     desc:'자동 씨앗 획득량이 늘어나요',     effect:'자동 +1개/3분 (중복가능)',    cost:100,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.autoBonus=(s.autoBonus||0)+1; } },
+  { id:'autoplus',     icon:'⚙️', name:'자동 수확기',     desc:'자동 씨앗 획득량이 늘어나요',     effect:'자동 +1개/3분 (중복가능)',    cost:50,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.autoBonus=(s.autoBonus||0)+1; } },
   { id:'gauge_boost',  icon:'⚡', name:'게이지 가속제',   desc:'병아리 진화 게이지 즉시 증가',    effect:'게이지 +10% 즉시',            cost:150,  type:'consume',           action:(s)=>{ s.evolveGauge=Math.min(0.99,(s.evolveGauge||0)+0.1); } },
   { id:'lucky_clover', icon:'🍀', name:'네잎클로버',      desc:'수집품 드롭 확률 2배!',           effect:'수집 확률 ×2 (120초)',        cost:60,  type:'consume',           action:(s)=>{ s.luckyActive=(s.luckyActive||0)+120; } },
   { id:'magnet',       icon:'🧲', name:'씨앗 자석',       desc:'아이템 터치 보너스 씨앗 추가',    effect:'아이템 씨앗 +1',              cost:50,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.pickBonus=(s.pickBonus||0)+1; } },
