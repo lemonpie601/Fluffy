@@ -168,6 +168,49 @@ html, body {
 .scene-middle[data-loc="sunset"] { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='50'%3E%3Cpath d='M0 35 Q20 20 40 35 Q60 50 80 35 L80 50 L0 50Z' fill='%234a3000'/%3E%3C/svg%3E") repeat-x bottom/80px 50px; }
 .scene-middle[data-loc="night"]  { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='50'%3E%3Cpath d='M0 35 Q20 20 40 35 Q60 50 80 35 L80 50 L0 50Z' fill='%23112211'/%3E%3C/svg%3E") repeat-x bottom/80px 50px; }
 
+/* HORIZON LINE — 수평선/지평선 */
+.scene-horizon {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 8%;           /* 화면 아래쪽 8% 지점에 수평선 */
+  height: 48px;
+  z-index: 2;
+  pointer-events: none;
+}
+/* 들판 — 풀밭 언덕 라인 */
+.scene-horizon[data-loc="field"] {
+  background:
+    linear-gradient(180deg, transparent 0%, #7bbf6a 38%, #5fa050 100%);
+  border-top: 3px solid #5fa050;
+}
+/* 연못 — 수면 반짝임 */
+.scene-horizon[data-loc="lake"] {
+  background:
+    linear-gradient(180deg, rgba(120,184,212,0.0) 0%, rgba(78,160,200,0.85) 35%, #3a8ab8 100%);
+  border-top: 2px solid rgba(255,255,255,0.55);
+  box-shadow: 0 -2px 10px rgba(80,180,220,0.35);
+}
+/* 숲 — 짙은 풀숲 라인 */
+.scene-horizon[data-loc="forest"] {
+  background:
+    linear-gradient(180deg, transparent 0%, #3d7a35 40%, #2a5a22 100%);
+  border-top: 3px solid #3d7a35;
+}
+/* 노을 — 어두운 지평선 실루엣 */
+.scene-horizon[data-loc="sunset"] {
+  background:
+    linear-gradient(180deg, transparent 0%, #7a3a0a 40%, #4a1f00 100%);
+  border-top: 2px solid #c06030;
+  box-shadow: 0 -4px 16px rgba(255,120,30,0.3);
+}
+/* 밤 — 어두운 지평선, 별빛 반사 */
+.scene-horizon[data-loc="night"] {
+  background:
+    linear-gradient(180deg, transparent 0%, #0d1f10 40%, #040d06 100%);
+  border-top: 1px solid rgba(120,160,255,0.25);
+  box-shadow: 0 -3px 12px rgba(60,80,180,0.2);
+}
+
 /* DEPTH STAGE */
 .depth-stage { position: absolute; inset: 0; pointer-events: none; }
 .chick-entity {
@@ -284,18 +327,27 @@ html, body {
 .shop-buy-btn:hover    { transform: scale(1.04); box-shadow: 0 4px 12px rgba(244,196,48,.6); }
 .shop-buy-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* CHICKS PANEL */
-.chick-card { background: white; border-radius: 14px; padding: 16px; box-shadow: 0 2px 8px var(--shadow); display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background .15s; }
+/* ANIMALS PANEL */
+.chick-card { background: white; border-radius: 14px; padding: 14px; box-shadow: 0 2px 8px var(--shadow); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background .15s; }
 .chick-card:hover { background: #fdf0c8; }
-.chick-card-icon  { font-size: 36px; }
-.chick-card-info  { flex: 1; }
-.chick-card-name  { font-size: 14px; font-weight: 700; }
-.chick-card-trait { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
+.chick-card.in-scene { background: #f0fce8; border: 1.5px solid #8fc98a; }
+.chick-card-icon  { font-size: 32px; flex-shrink: 0; }
+.chick-card-info  { flex: 1; min-width: 0; }
+.chick-card-name  { font-size: 13px; font-weight: 700; }
+.chick-card-trait { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+.scene-toggle-btn { font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 20px; background: var(--yellow1); color: var(--text-main); flex-shrink: 0; }
+.chick-card.in-scene .scene-toggle-btn { background: #d4edda; color: #2a7a3a; }
 .chick-card-locked { background: #f5f0e8; border-radius: 14px; padding: 14px; box-shadow: 0 1px 4px var(--shadow); display: flex; align-items: center; gap: 12px; opacity: .55; }
 .chick-lock-icon   { font-size: 28px; filter: grayscale(1); }
 .chick-lock-info   { flex: 1; }
 .chick-lock-name   { font-size: 13px; font-weight: 700; color: var(--text-sub); }
 .chick-lock-hint   { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
+
+/* BGM SELECTOR */
+.bgm-selector { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.bgm-btn { background: white; border: 1.5px solid #e0d8c8; border-radius: 10px; padding: 9px 14px; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; color: var(--text-sub); transition: all .15s; }
+.bgm-btn:hover { background: #fdf5e0; border-color: var(--yellow2); }
+.bgm-btn.active { background: var(--yellow1); border-color: var(--yellow2); color: var(--text-main); font-weight: 800; }
 
 /* STATS */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
