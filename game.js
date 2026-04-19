@@ -81,10 +81,10 @@ const EVOLVE_INTERVAL = 6 * 60; // 6분마다 게이지 1회
 
 const LOCATIONS = [
   { id:'field',  name:'🌾 들판',   emoji:'🌾', unlockSeeds:0,     items:['🌸','🌼','🍀','🌿','🌱','🦋','🌻','🍎','🍊','🍋','🍇','🍓','🌽','🥕','🥦','🍑','🥬'], particles:['🐾','🍃','✨','🌸'], seedRate:1.0, desc:'따사로운 햇살 아래 넓은 들판' },
-  { id:'lake',   name:'💧 연못',   emoji:'💧', unlockSeeds:300,   items:['🪷','🌊','🐟','🐚','🪸','💎','🍉','🫐','🍈','🫒'],      particles:['🐾','💧','🫧','✨'], seedRate:1.6, desc:'반짝이는 연못가에서 쉬는 시간' },
-  { id:'forest', name:'🌲 숲',     emoji:'🌲', unlockSeeds:1200,  items:['🍄','🌰','🍂','🐞','🍁','🌿','🍁','🧅','🧄','🥜','🫚','🪶'],     particles:['🐾','🍃','🌿','✨','🌷'], seedRate:2.2, desc:'조용하고 신비로운 숲 속' },
-  { id:'sunset', name:'🌅 노을',   emoji:'🌅', unlockSeeds:5000,  items:['☁️','🌟','🎑','🌸','✨','🍑','🥭','🍊','🌾','🫘'],          particles:['🐾','✨','🌟','🧡','🌻'], seedRate:3.0, desc:'온 세상이 주황빛으로 물드는 시간' },
-  { id:'night',  name:'🌙 밤하늘', emoji:'🌙', unlockSeeds:20000, items:['⭐','🌠','🔮','🫧','🌌','💜','🍇','🫐','🍋'],      particles:['🐾','⭐','✨','🌙','🕸️'], seedRate:4.2, desc:'별이 쏟아지는 고요한 밤' },
+  { id:'lake',   name:'💧 연못',   emoji:'💧', unlockSeeds:30,   items:['🪷','🌊','🐟','🐚','🪸','💎','🍉','🫐','🍈','🫒'],      particles:['🐾','💧','🫧','✨'], seedRate:1.6, desc:'반짝이는 연못가에서 쉬는 시간' },
+  { id:'forest', name:'🌲 숲',     emoji:'🌲', unlockSeeds:80,  items:['🍄','🌰','🍂','🐞','🍁','🌿','🍁','🧅','🧄','🥜','🫚','🪶'],     particles:['🐾','🍃','🌿','✨','🌷'], seedRate:2.2, desc:'조용하고 신비로운 숲 속' },
+  { id:'sunset', name:'🌅 노을',   emoji:'🌅', unlockSeeds:120,  items:['☁️','🌟','🎑','🌸','✨','🍑','🥭','🍊','🌾','🫘'],          particles:['🐾','✨','🌟','🧡','🌻'], seedRate:3.0, desc:'온 세상이 주황빛으로 물드는 시간' },
+  { id:'night',  name:'🌙 밤하늘', emoji:'🌙', unlockSeeds:260, items:['⭐','🌠','🔮','🫧','🌌','💜','🍇','🫐','🍋'],      particles:['🐾','⭐','✨','🌙','🕸️'], seedRate:4.2, desc:'별이 쏟아지는 고요한 밤' },
 ];
 
 const SHOP_ITEMS = [
