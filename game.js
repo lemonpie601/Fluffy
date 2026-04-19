@@ -54,7 +54,7 @@ const ANIMAL_TYPES = [
   { id:'snail',   emoji:'🐌', name:'달팽이',   trait:'아~주 천천히 가요',     seedBonus:1.6 },
   { id:'bee',     emoji:'🐝', name:'꿀벌',     trait:'윙윙 날아다녀요',       seedBonus:1.8 },
   { id:'ladybug', emoji:'🐞', name:'무당벌레', trait:'동글동글 날아요',       seedBonus:1.7 },
-  { id:'blackbird', emoji:'🐦‍⬛', name:'검은 새',    trait:'날쌔게 날아다녀요',     seedBonus:2.1 },
+  { id:'blackbird', emoji:'🐦‍⬛', name:'까마귀',    trait:'날쌔게 날아다녀요',     seedBonus:2.1 },
   { id:'swan',      emoji:'🦢', name:'백조',        trait:'우아하게 헤엄쳐요',     seedBonus:2.3 },
   { id:'peacock',   emoji:'🦚', name:'공작',        trait:'깃털을 펼치며 걸어요',  seedBonus:2.8 },
   { id:'rooster',   emoji:'🐓', name:'수탉',        trait:'당당하게 걸어요',       seedBonus:2.0 },
@@ -75,6 +75,7 @@ const ANIMAL_TYPES = [
   { id:'cow',       emoji:'🐄', name:'소',          trait:'느릿느릿 걸어요',       seedBonus:2.2 },
   { id:'sheep',     emoji:'🐑', name:'양',          trait:'모여서 돌아다녀요',     seedBonus:2.1 },
   { id:'goat',      emoji:'🐐', name:'염소',        trait:'깡충깡충 뛰어요',       seedBonus:2.0 },
+  { id:'goose', emoji:'🪿', name:'거위', trait:'뒤뚱뒤뚱 걸어요', seedBonus:2.1 },
 ];
 
 const EVOLVE_INTERVAL = 6 * 60; // 6분마다 게이지 1회
