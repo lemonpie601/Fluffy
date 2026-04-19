@@ -483,7 +483,7 @@ function renderChicks() {
             showToast(atInner.emoji+' '+atInner.name+' 풍경에서 제거했어요');
           } else {
             // 씬에 추가 (최대 8마리)
-            if (state.sceneAnimals.length >= 8) { showToast('동물은 최대 8마리까지 배치할 수 있어요'); return; }
+            if (state.sceneAnimals.length >= 12) { showToast('동물은 최대 12마리까지 배치할 수 있어요'); return; }
             state.sceneAnimals.push(atInner.id);
             showToast(atInner.emoji+' '+atInner.name+' 풍경에 추가했어요!');
           }
@@ -940,7 +940,7 @@ function updateTimeDisplay(){
 /* ===================== BUILD ANIMALS ===================== */
 function buildAnimals(){
   $depthStage.innerHTML=''; animalEntities.length=0;
-  var toShow=state.sceneAnimals.slice(0,8);
+  var toShow=state.sceneAnimals.slice(0,12);
   var mode=getMoveMode();
   toShow.forEach(function(id){
     var e=createAnimalEntity(id);
