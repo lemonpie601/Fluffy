@@ -49,7 +49,6 @@ const ANIMAL_TYPES = [
   { id:'lizard',  emoji:'🦎', name:'도마뱀',   trait:'재빠르게 달려요',       seedBonus:2.7 },
   { id:'croc',    emoji:'🐊', name:'악어',     trait:'슬금슬금 기어요',       seedBonus:2.9 },
   { id:'dragon',  emoji:'🐉', name:'용',       trait:'하늘을 날아다녀요',     seedBonus:4.5 },
-  { id:'unicorn', emoji:'🦄', name:'유니콘',   trait:'반짝이며 달려요',       seedBonus:4.8 },
   { id:'bat',     emoji:'🦇', name:'박쥐',     trait:'팔랑팔랑 날아요',       seedBonus:2.2 },
   { id:'snail',   emoji:'🐌', name:'달팽이',   trait:'아~주 천천히 가요',     seedBonus:1.6 },
   { id:'bee',     emoji:'🐝', name:'꿀벌',     trait:'윙윙 날아다녀요',       seedBonus:1.8 },
