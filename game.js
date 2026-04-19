@@ -126,7 +126,7 @@ const ITEM_TO_COLLECT = {
   '🌼':'daisy','🍀':'clover','🦋':'butterfly',
   '🪷':'lotus','🐚':'shell','💎':'gem',
   '🍄':'mushroom','🌰':'acorn',
-  '🌟':'star','🌠':'comet','🔮':'orb'
+  '🌟':'star','🌠':'comet','🔮':'orb',
   '🍎':'apple', '🍓':'strawberry', '🌽':'corn', '🍇':'grape', '🥕':'carrot',
   '🍉':'watermelon', '🫐':'blueberry',
   '🥜':'peanut',
