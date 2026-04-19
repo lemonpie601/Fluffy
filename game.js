@@ -892,15 +892,19 @@ function tickSeedTimers(dt){
   }
 }
 
-/* ===================== EVOLVE GAUGE ===================== */
+/* ===================== EVOLVE GAUGE (RANDOM UNLOCK) ===================== */
 function tickEvolve(dt){
-  var nextIdx=state.unlockedAnimals.length;
-  if (nextIdx>=ANIMAL_TYPES.length){
+  var remainingAnimals=ANIMAL_TYPES.filter(function(a){
+    return state.unlockedAnimals.indexOf(a.id)<0;
+  });
+  
+  if (remainingAnimals.length===0){
     $evolveLabel.textContent='🎉 모든 동물 해금!';
     $evolveFill.style.width='100%'; $evolveTime.textContent='완료!'; return;
   }
-  var nextAnimal=ANIMAL_TYPES[nextIdx];
-  $evolveLabel.textContent=nextAnimal.emoji+' 까지';
+  
+  var nextAnimal=remainingAnimals[Math.floor(Math.random()*remainingAnimals.length)];
+  $evolveLabel.textContent=nextAnimal.emoji+' 중 하나!';
   state.evolveGauge=(state.evolveGauge||0)+dt/EVOLVE_INTERVAL;
   if(state.evolveGauge>=1){
     state.evolveGauge=0;
