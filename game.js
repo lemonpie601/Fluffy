@@ -131,7 +131,7 @@ const ITEM_TO_COLLECT = {
   '🍉':'watermelon', '🫐':'blueberry',
   '🥜':'peanut',
   '🍑':'peach', '🥭':'mango',
-  '🍋':'lemon', '🫒':'olive',
+  '🍋':'lemon', '🫒':'olive'
 };
 
 /* BGM 멜로디 목록 — 장소별 여러 곡 */
