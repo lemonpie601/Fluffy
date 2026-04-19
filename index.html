@@ -16,7 +16,7 @@
       <div class="cloud cloud3"></div>
     </div>
     <div class="title-content">
-      <div class="title-chick">🐤</div>
+      <div class="title-chick" id="title-chick">🐤</div>
       <h1 class="title-name">Fluffy Wanderer</h1>
       <p class="title-sub">병아리의 한가로운 여행</p>
       <div class="title-buttons">
@@ -50,42 +50,50 @@
         <span class="time-display" id="time-display">00:00:00</span>
       </div>
       <div class="header-right">
-        <button class="icon-btn" id="btn-stats" title="통계">📊</button>
+        <button class="icon-btn" id="btn-shop"    title="상점">🛒</button>
+        <button class="icon-btn" id="btn-chicks"  title="병아리">🐣</button>
+        <button class="icon-btn" id="btn-stats"   title="통계">📊</button>
         <button class="icon-btn" id="btn-collect" title="수집">⭐</button>
-        <button class="icon-btn" id="btn-save" title="저장">💾</button>
-        <button class="icon-btn" id="btn-menu" title="메뉴">☰</button>
+        <button class="icon-btn" id="btn-save"    title="저장">💾</button>
+        <button class="icon-btn" id="btn-menu"    title="메뉴">☰</button>
       </div>
     </header>
 
+    <!-- EVOLVE GAUGE BAR -->
+    <div class="evolve-bar-wrap" id="evolve-bar-wrap">
+      <div class="evolve-bar-inner">
+        <span class="evolve-label" id="evolve-label">🥚 다음 병아리까지</span>
+        <div class="evolve-track">
+          <div class="evolve-fill" id="evolve-fill"></div>
+        </div>
+        <span class="evolve-time" id="evolve-time">--:--</span>
+      </div>
+    </div>
+
     <!-- SCENE AREA -->
     <main class="game-scene" id="game-scene">
-      <!-- background layers -->
-      <div class="scene-bg" id="scene-bg"></div>
+      <div class="scene-bg"     id="scene-bg"></div>
       <div class="scene-middle" id="scene-middle"></div>
 
-      <!-- chick character -->
-      <div class="chick-wrap" id="chick-wrap">
-        <div class="chick" id="chick">🐤</div>
-        <div class="chick-shadow"></div>
-      </div>
+      <!-- depth lanes: chicks live here -->
+      <div class="depth-stage" id="depth-stage"></div>
 
-      <!-- floating items in scene -->
+      <!-- floating items -->
       <div class="scene-items" id="scene-items"></div>
 
-      <!-- ambient particles -->
+      <!-- particles -->
       <div class="particles" id="particles"></div>
     </main>
 
     <!-- BOTTOM BAR -->
     <footer class="game-footer">
       <div class="footer-row">
-        <!-- Location buttons -->
         <div class="location-tabs" id="location-tabs"></div>
       </div>
       <div class="footer-row footer-status">
-        <div class="stat-pill">🌟 <span id="stat-seeds">0</span> 씨앗</div>
-        <div class="stat-pill">🎵 <span id="stat-songs">0</span> 노래</div>
-        <div class="stat-pill">🗺️ <span id="stat-places">1</span> 장소</div>
+        <div class="stat-pill">🌱 <span id="stat-seeds">0</span></div>
+        <div class="stat-pill">🐣 <span id="stat-chick-count">1</span>마리</div>
+        <div class="stat-pill">🗺️ <span id="stat-places">1</span>/5</div>
         <div class="sound-toggle">
           <button class="icon-btn" id="btn-sound" title="소리">🔔</button>
         </div>
@@ -93,6 +101,24 @@
     </footer>
 
   </div><!-- /.screen-game -->
+
+  <!-- ===== SHOP PANEL ===== -->
+  <div id="panel-shop" class="side-panel hidden">
+    <div class="panel-header">
+      <span>🛒 씨앗 상점</span>
+      <button class="close-btn" data-close="panel-shop">✕</button>
+    </div>
+    <div class="panel-body" id="shop-body"></div>
+  </div>
+
+  <!-- ===== CHICKS PANEL ===== -->
+  <div id="panel-chicks" class="side-panel hidden">
+    <div class="panel-header">
+      <span>🐣 나의 병아리들</span>
+      <button class="close-btn" data-close="panel-chicks">✕</button>
+    </div>
+    <div class="panel-body" id="chicks-body"></div>
+  </div>
 
   <!-- ===== STATS PANEL ===== -->
   <div id="panel-stats" class="side-panel hidden">
