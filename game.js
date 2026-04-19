@@ -26,14 +26,15 @@ const LOCATIONS = [
   { id:'night',  name:'🌙 밤하늘', emoji:'🌙', unlockSeeds:20000, items:['⭐','🌙','🌠','🦉','🔮','🫧','🌌'],       particles:['⭐','✨','🌙'], seedRate:4.2, moveMode:'figure8', desc:'별이 쏟아지는 고요한 밤' },
 ];
 
+/* 상점: 씨앗 직접 지급 아이템 없음. 업그레이드/버프 위주 */
 const SHOP_ITEMS = [
-  { id:'feed',        icon:'🌾', name:'씨앗 여물',        desc:'병아리에게 먹이를 줘요',         effect:'+50 씨앗 즉시',              cost:30,   type:'consume',                action:(s)=>{ s.seeds+=50; s.totalSeeds+=50; } },
-  { id:'feast',       icon:'🍱', name:'특별 도시락',       desc:'맛있는 도시락으로 기운 충전',     effect:'+300 씨앗 즉시',             cost:150,  type:'consume',                action:(s)=>{ s.seeds+=300; s.totalSeeds+=300; } },
-  { id:'autoplus',    icon:'⚙️', name:'자동 수확기',       desc:'자동 씨앗 획득량 증가',           effect:'자동 +1개/3분 (중복가능)',    cost:200,  type:'upgrade', maxOwn:5,      action:(s)=>{ s.autoBonus=(s.autoBonus||0)+1; } },
-  { id:'speedup',     icon:'💨', name:'바람개비',           desc:'병아리가 더 활발하게 돌아다녀요', effect:'이동 속도 +20%',             cost:400,  type:'upgrade', maxOwn:3,      action:(s)=>{ s.speedBonus=(s.speedBonus||0)+0.2; } },
-  { id:'magnet',      icon:'🧲', name:'씨앗 자석',         desc:'아이템 획득 씨앗 추가',           effect:'아이템 씨앗 +1',             cost:600,  type:'upgrade', maxOwn:5,      action:(s)=>{ s.pickBonus=(s.pickBonus||0)+1; } },
-  { id:'gauge_boost', icon:'⚡', name:'게이지 가속제',      desc:'병아리 진화 게이지 즉시 증가',    effect:'게이지 +10% 즉시',           cost:250,  type:'consume',                action:(s)=>{ s.evolveProgress=Math.min(1,(s.evolveProgress||0)+0.1); s.evolveTotal=(s.evolveTotal||0)+EVOLVE_INTERVAL*0.1; } },
-  { id:'lucky_clover',icon:'🍀', name:'네잎클로버',         desc:'수집품 드롭 확률 2배',            effect:'수집 확률 ×2 (120초)',       cost:500,  type:'consume',                action:(s)=>{ s.luckyActive=(s.luckyActive||0)+120; } },
+  { id:'speedup',      icon:'💨', name:'바람개비',        desc:'병아리가 더 활발하게 돌아다녀요', effect:'이동 속도 +20%',              cost:80,   type:'upgrade', maxOwn:5,  action:(s)=>{ s.speedBonus=(s.speedBonus||0)+0.2; } },
+  { id:'autoplus',     icon:'⚙️', name:'자동 수확기',     desc:'자동 씨앗 획득량이 늘어나요',     effect:'자동 +1개/3분 (중복가능)',    cost:200,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.autoBonus=(s.autoBonus||0)+1; } },
+  { id:'gauge_boost',  icon:'⚡', name:'게이지 가속제',   desc:'병아리 진화 게이지 즉시 증가',    effect:'게이지 +10% 즉시',            cost:300,  type:'consume',           action:(s)=>{ s.evolveGauge=Math.min(0.99,(s.evolveGauge||0)+0.1); } },
+  { id:'lucky_clover', icon:'🍀', name:'네잎클로버',      desc:'수집품 드롭 확률 2배!',           effect:'수집 확률 ×2 (120초)',        cost:400,  type:'consume',           action:(s)=>{ s.luckyActive=(s.luckyActive||0)+120; } },
+  { id:'magnet',       icon:'🧲', name:'씨앗 자석',       desc:'아이템 터치 보너스 씨앗 추가',    effect:'아이템 씨앗 +1',              cost:500,  type:'upgrade', maxOwn:5,  action:(s)=>{ s.pickBonus=(s.pickBonus||0)+1; } },
+  { id:'party_hat',    icon:'🎩', name:'파티 모자',        desc:'병아리가 모자를 쓰고 신나해요',   effect:'씨앗 보너스 +10% (영구)',     cost:800,  type:'upgrade', maxOwn:3,  action:(s)=>{ s.partyBonus=(s.partyBonus||0)+0.1; } },
+  { id:'rainbow',      icon:'🌈', name:'무지개 다리',      desc:'특별한 파티클이 생겨요',          effect:'파티클 효과 강화 (영구)',      cost:1500, type:'upgrade', maxOwn:1,  action:(s)=>{ s.rainbowActive=true; } },
 ];
 
 const COLLECTIBLES = [
@@ -63,8 +64,10 @@ const DEFAULT_STATE = () => ({
   currentLoc:'field', unlockedLocs:['field'],
   collected:{}, shopOwned:{},
   autoBonus:0, speedBonus:0, pickBonus:0, luckyActive:0,
+  partyBonus:0, rainbowActive:false,
   unlockedChicks:['chick'], activeChick:'chick',
-  evolveProgress:0, evolveTotal:0,
+  evolveGauge:0,       // 0~1 현재 게이지 (새 시스템)
+  evolveProgress:0, evolveTotal:0, // 하위호환용
   stats:{ playTime:0, taps:0, itemsPicked:0, locsVisited:1, autoSeeds:0 },
   soundOn:true, songs:0, lastSave:null,
 });
@@ -115,10 +118,24 @@ const closeBtns     = document.querySelectorAll('.close-btn');
 
 /* ---- AUDIO ---- */
 let audioCtx = null;
+let bgmInterval = null;
+let bgmNoteIdx = 0;
+
+// 장소별 BGM 멜로디 (주파수 배열)
+const BGM_MELODIES = {
+  field:  [523,587,659,698,784,698,659,587, 523,587,659,784,880,784,659,523],
+  lake:   [440,494,523,587,523,494,440,392, 440,523,587,659,587,523,440,392],
+  forest: [392,440,494,523,440,392,349,392, 440,494,523,587,523,494,440,392],
+  sunset: [349,392,440,523,587,523,440,392, 349,440,523,587,659,587,523,440],
+  night:  [262,294,330,349,294,262,247,262, 294,330,349,392,349,330,294,262],
+};
+const BGM_TEMPO = 420; // ms per note
+
 function initAudio() {
   if (audioCtx) return;
   try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
 }
+
 function playTone(freq, type, dur, vol) {
   type=type||'sine'; dur=dur||0.18; vol=vol||0.16;
   if (!state.soundOn || !audioCtx) return;
@@ -131,10 +148,52 @@ function playTone(freq, type, dur, vol) {
     osc.start(); osc.stop(audioCtx.currentTime+dur);
   } catch(e) {}
 }
+
+function startBGM() {
+  stopBGM();
+  if (!state.soundOn || !audioCtx) return;
+  var melody = BGM_MELODIES[state.currentLoc] || BGM_MELODIES.field;
+  bgmNoteIdx = 0;
+  function playNext() {
+    if (!state.soundOn || !audioCtx) return;
+    var freq = melody[bgmNoteIdx % melody.length];
+    // BGM은 부드러운 사인파, 작은 볼륨
+    try {
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      var dur = BGM_TEMPO / 1000 * 0.75;
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      osc.start(); osc.stop(audioCtx.currentTime + dur);
+    } catch(e) {}
+    bgmNoteIdx++;
+    if (bgmNoteIdx >= melody.length) bgmNoteIdx = 0;
+  }
+  playNext();
+  bgmInterval = setInterval(playNext, BGM_TEMPO);
+}
+
+function stopBGM() {
+  if (bgmInterval) { clearInterval(bgmInterval); bgmInterval = null; }
+}
+
 function playCollect(){ playTone(1047,'triangle',.2,.2); setTimeout(function(){playTone(1319,'triangle',.2,.16);},80); }
 function playUnlock() { [523,659,784,1047].forEach(function(f,i){setTimeout(function(){playTone(f,'sine',.3,.18);},i*80);}); }
 function playEvolve() { [523,659,784,1047,1319].forEach(function(f,i){setTimeout(function(){playTone(f,'triangle',.35,.22);},i*90);}); }
-function playTap()    { playTone(660,'sine',.1,.12); }
+
+/* 클릭 시 병아리 소리 — 랜덤한 귀여운 음 */
+function playChickSound() {
+  if (!state.soundOn || !audioCtx) return;
+  var notes = [659, 698, 784, 880, 988];
+  var freq = notes[Math.floor(Math.random()*notes.length)];
+  // 삐약 느낌: 짧고 빠른 두 음
+  playTone(freq, 'triangle', 0.08, 0.18);
+  setTimeout(function(){ playTone(freq*1.2, 'triangle', 0.06, 0.12); }, 70);
+}
+
 function playLocMove(){ playTone(440,'triangle',.2,.14); }
 function playSave()   { [523,659].forEach(function(f,i){setTimeout(function(){playTone(f,'sine',.2,.14);},i*80);}); }
 function playBuy()    { playTone(784,'sine',.18,.16); }
@@ -344,6 +403,8 @@ function travelTo(locId) {
   var loc=LOCATIONS.find(function(l){return l.id===locId;});
   $locName.textContent=loc.name;
   showToast(loc.emoji+' '+loc.desc);
+  // 장소 이동 시 BGM 재시작
+  startBGM();
 }
 
 function applyScene() {
@@ -353,18 +414,16 @@ function applyScene() {
 
 /* ============================================================
    DEPTH / XYZ MOVEMENT
-   x = left/right (%)
-   z = depth → bottom% + fontSize (far = higher bottom%, smaller)
-   No up/down (y) for chick body position
    ============================================================ */
 function randomDepth() {
   var r=Math.random();
-  if (r<0.33) return 10+Math.random()*12;   // near 10-22
-  if (r<0.66) return 22+Math.random()*18;   // mid  22-40
-  return 40+Math.random()*15;               // far  40-55
+  if (r<0.33) return 10+Math.random()*12;
+  if (r<0.66) return 22+Math.random()*18;
+  return 40+Math.random()*15;
 }
+// 병아리 크기 증가: 근경 80px, 원경 36px
 function depthToFontSize(b) {
-  return Math.round(52 - (b-10)/45*32);
+  return Math.round(80 - (b-10)/45*44);
 }
 function depthToZ(b) { return Math.round(100-b); }
 
@@ -396,15 +455,13 @@ function createChickEntity(chickTypeId) {
     _driftDepthTarget:undefined,
   };
 
+  // 클릭 시 씨앗 획득 없음 — 소리 + 하트 이펙트만
   el.addEventListener('pointerdown', function(e) {
     e.stopPropagation();
     initAudio();
     state.stats.taps++;
-    var ct2=CHICK_TYPES.find(function(c){return c.id===entity.chickId;})||CHICK_TYPES[0];
-    var bonus=Math.ceil(2*ct2.seedBonus*(1+(state.speedBonus||0))*currentLocRate());
+    playChickSound();
     var rect=el.getBoundingClientRect();
-    addSeeds(bonus, rect.left+rect.width/2, rect.top);
-    playTap();
     spawnHeart(rect.left+rect.width/2, rect.top);
   });
 
@@ -529,7 +586,8 @@ function collectItem(el, emoji, evt) {
   initAudio();
   var rect=el.getBoundingClientRect(); el.remove();
   var loc=LOCATIONS.find(function(l){return l.id===state.currentLoc;});
-  var reward=Math.ceil(1*(loc?loc.seedRate:1))+(state.pickBonus||0);
+  var partyMul = 1 + (state.partyBonus||0);
+  var reward=Math.ceil(1*(loc?loc.seedRate:1)*partyMul)+(state.pickBonus||0);
   addSeeds(reward, rect.left, rect.top);
   playCollect();
   var cid=ITEM_TO_COLLECT[emoji];
@@ -552,9 +610,13 @@ function spawnParticles() {
   $particles.innerHTML='';
   var loc=LOCATIONS.find(function(l){return l.id===state.currentLoc;});
   if (!loc) return;
-  for (var i=0;i<10;i++){
+  var count = state.rainbowActive ? 18 : 10;
+  for (var i=0;i<count;i++){
     var p=document.createElement('div'); p.className='particle';
-    p.textContent=loc.particles[Math.floor(Math.random()*loc.particles.length)];
+    var ptypes = state.rainbowActive
+      ? ['🌈','✨','🌟','💫','🎵','🌸','🍀','💛'].concat(loc.particles)
+      : loc.particles;
+    p.textContent=ptypes[Math.floor(Math.random()*ptypes.length)];
     p.style.left=Math.random()*90+'%'; p.style.bottom=Math.random()*50+'%';
     p.style.setProperty('--dur',(3+Math.random()*5)+'s');
     p.style.setProperty('--delay2',(Math.random()*6)+'s');
@@ -579,7 +641,7 @@ function addSeeds(amount, x, y) {
 function updateSeedDisplay(){ $statSeeds.textContent=fmt(state.seeds); }
 
 function spawnHeart(x,y){
-  var hearts=['💛','✨','🌟','🐥'];
+  var hearts=['💛','✨','🌟','🐥','💕','🎵'];
   var pop=document.createElement('div'); pop.className='coin-pop';
   pop.textContent=hearts[Math.floor(Math.random()*hearts.length)];
   var scRect=$gameScene.getBoundingClientRect();
@@ -599,27 +661,35 @@ function checkUnlocks(){
 }
 
 /* ---- EVOLVE GAUGE ---- */
+// evolveGauge: 0~1 사이의 현재 게이지 진행도 (state에 저장)
+// 게이지가 1에 도달할 때마다 새 병아리 1마리 해금
 function tickEvolve(dt){
   var nextIdx=state.unlockedChicks.length;
   if (nextIdx>=CHICK_TYPES.length){
     $evolveLabel.textContent='🎉 모든 병아리 해금!';
     $evolveFill.style.width='100%'; $evolveTime.textContent='완료!'; return;
   }
-  state.evolveTotal+=dt;
-  var cycle=state.evolveTotal%EVOLVE_INTERVAL;
-  state.evolveProgress=cycle/EVOLVE_INTERVAL;
-  $evolveFill.style.width=(state.evolveProgress*100)+'%';
-  $evolveTime.textContent=fmtTime(EVOLVE_INTERVAL-cycle);
   var nextChick=CHICK_TYPES[nextIdx];
   $evolveLabel.textContent=nextChick.emoji+' 까지';
-  if (state.evolveTotal>=nextIdx*EVOLVE_INTERVAL+EVOLVE_INTERVAL){
+
+  // 게이지 증가 (초당 1/EVOLVE_INTERVAL)
+  state.evolveGauge=(state.evolveGauge||0)+dt/EVOLVE_INTERVAL;
+
+  // 게이지 꽉 찼으면 병아리 해금
+  if (state.evolveGauge>=1){
+    state.evolveGauge=0; // 게이지 리셋
     if (state.unlockedChicks.indexOf(nextChick.id)<0){
       state.unlockedChicks.push(nextChick.id);
       $statChicks.textContent=state.unlockedChicks.length;
       showToast('🎉 새 병아리 해금! '+nextChick.emoji+' '+nextChick.name);
-      playEvolve(); buildChicks();
+      playEvolve();
+      addChickToScene(nextChick.id); // 기존 병아리는 유지하고 새 병아리만 추가
     }
   }
+
+  $evolveFill.style.width=(Math.min(state.evolveGauge,1)*100)+'%';
+  $evolveTime.textContent=fmtTime(EVOLVE_INTERVAL*(1-Math.min(state.evolveGauge,1)));
+  state.evolveProgress=state.evolveGauge; // 하위 호환
 }
 
 /* ---- AUTO SEED INCOME  (base: 1 seed / 3min) ---- */
@@ -652,11 +722,24 @@ function updateTimeDisplay(){
 }
 
 /* ---- BUILD CHICKS ---- */
+// 게임 시작/로드 시 전체 병아리 재생성
 function buildChicks(){
   $depthStage.innerHTML=''; chickEntities.length=0;
-  var toShow=state.unlockedChicks.slice(0,6);
+  // 해금된 병아리를 최대 8마리까지 모두 표시
+  var toShow = state.unlockedChicks.slice(0, 8);
   toShow.forEach(function(cid){ var e=createChickEntity(cid); applyMoveMode(e); });
-  if (toShow.indexOf(state.activeChick)<0){ var e2=createChickEntity(state.activeChick); applyMoveMode(e2); }
+  $statChicks.textContent=state.unlockedChicks.length;
+}
+
+// 게이지 해금 시 기존 병아리는 유지하고 새 병아리만 추가
+function addChickToScene(chickId){
+  // 이미 화면에 있으면 추가 안 함
+  var already = chickEntities.some(function(e){ return e.chickId===chickId; });
+  if (already) return;
+  // 8마리 초과 시 추가 안 함
+  if (chickEntities.length >= 8) return;
+  var e = createChickEntity(chickId);
+  applyMoveMode(e);
   $statChicks.textContent=state.unlockedChicks.length;
 }
 
@@ -675,6 +758,8 @@ function startGame(){
   showScreen('screen-game');
   rafId=requestAnimationFrame(tick);
   showToast('🐤 안녕! 여행을 시작해요~');
+  // 게임 시작 시 BGM (짧은 딜레이 후 — AudioContext 활성화 보장)
+  setTimeout(function(){ if(audioCtx) startBGM(); }, 300);
 }
 
 /* ---- BUTTON WIRING ---- */
@@ -688,16 +773,19 @@ $btnSound   .addEventListener('click',function(){
   initAudio(); state.soundOn=!state.soundOn;
   $btnSound.textContent=state.soundOn?'🔔':'🔕';
   showToast(state.soundOn?'🔔 소리 켜짐':'🔕 소리 꺼짐');
+  if(state.soundOn){ startBGM(); } else { stopBGM(); }
 });
 $menuSave .addEventListener('click',function(){ saveGame(); closeAllPanels(); });
 $menuTitle.addEventListener('click',function(){
-  closeAllPanels();
+  closeAllPanels(); stopBGM();
   if(rafId) cancelAnimationFrame(rafId);
   showScreen('screen-title'); updateTitleButtons();
 });
 $menuReset.addEventListener('click',function(){ closeAllPanels(); $modalNew.classList.remove('hidden'); });
+// 씬 클릭 시 AudioContext 활성화만 (씨앗 획득 없음)
 $gameScene.addEventListener('pointerdown',function(){ initAudio(); });
 
+/* ---- TITLE BUTTONS ---- */
 /* ---- TITLE BUTTONS ---- */
 function updateTitleButtons(){ $btnCont.disabled=!hasSave(); }
 
