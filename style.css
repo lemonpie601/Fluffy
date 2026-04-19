@@ -172,43 +172,36 @@ html, body {
 .scene-horizon {
   position: absolute;
   left: 0; right: 0;
-  bottom: 8%;           /* 화면 아래쪽 8% 지점에 수평선 */
-  height: 48px;
+  bottom: 12%;          /* 화면 아래 12% 지점 */
+  height: 18px;         /* 얇게 */
   z-index: 2;
   pointer-events: none;
 }
-/* 들판 — 풀밭 언덕 라인 */
+/* 들판 — 풀밭 라인 */
 .scene-horizon[data-loc="field"] {
-  background:
-    linear-gradient(180deg, transparent 0%, #7bbf6a 38%, #5fa050 100%);
-  border-top: 3px solid #5fa050;
+  background: linear-gradient(180deg, transparent 0%, rgba(100,180,80,0.5) 60%, rgba(80,160,60,0.7) 100%);
+  border-top: 2px solid rgba(90,170,70,0.7);
 }
-/* 연못 — 수면 반짝임 */
+/* 연못 — 수면 */
 .scene-horizon[data-loc="lake"] {
-  background:
-    linear-gradient(180deg, rgba(120,184,212,0.0) 0%, rgba(78,160,200,0.85) 35%, #3a8ab8 100%);
-  border-top: 2px solid rgba(255,255,255,0.55);
-  box-shadow: 0 -2px 10px rgba(80,180,220,0.35);
+  background: linear-gradient(180deg, transparent 0%, rgba(78,160,200,0.4) 60%, rgba(50,130,180,0.6) 100%);
+  border-top: 1.5px solid rgba(180,220,255,0.6);
+  box-shadow: 0 -2px 8px rgba(80,180,220,0.2);
 }
-/* 숲 — 짙은 풀숲 라인 */
+/* 숲 — 짙은 풀숲 */
 .scene-horizon[data-loc="forest"] {
-  background:
-    linear-gradient(180deg, transparent 0%, #3d7a35 40%, #2a5a22 100%);
-  border-top: 3px solid #3d7a35;
+  background: linear-gradient(180deg, transparent 0%, rgba(50,110,40,0.5) 60%, rgba(35,85,28,0.7) 100%);
+  border-top: 2px solid rgba(60,130,50,0.7);
 }
-/* 노을 — 어두운 지평선 실루엣 */
+/* 노을 — 실루엣 */
 .scene-horizon[data-loc="sunset"] {
-  background:
-    linear-gradient(180deg, transparent 0%, #7a3a0a 40%, #4a1f00 100%);
-  border-top: 2px solid #c06030;
-  box-shadow: 0 -4px 16px rgba(255,120,30,0.3);
+  background: linear-gradient(180deg, transparent 0%, rgba(80,35,5,0.5) 60%, rgba(55,20,0,0.7) 100%);
+  border-top: 1.5px solid rgba(200,100,40,0.5);
 }
-/* 밤 — 어두운 지평선, 별빛 반사 */
+/* 밤 — 어두운 라인 */
 .scene-horizon[data-loc="night"] {
-  background:
-    linear-gradient(180deg, transparent 0%, #0d1f10 40%, #040d06 100%);
-  border-top: 1px solid rgba(120,160,255,0.25);
-  box-shadow: 0 -3px 12px rgba(60,80,180,0.2);
+  background: linear-gradient(180deg, transparent 0%, rgba(10,20,15,0.5) 60%, rgba(4,10,6,0.7) 100%);
+  border-top: 1px solid rgba(100,130,220,0.2);
 }
 
 /* DEPTH STAGE */
