@@ -904,7 +904,7 @@ function tickEvolve(dt){
   }
   
   var nextAnimal=remainingAnimals[Math.floor(Math.random()*remainingAnimals.length)];
-  $evolveLabel.textContent=nextAnimal.emoji+' 중 하나!';
+  $evolveLabel.textContent='🥚'+' 부화까지';
   state.evolveGauge=(state.evolveGauge||0)+dt/EVOLVE_INTERVAL;
   if(state.evolveGauge>=1){
     state.evolveGauge=0;
