@@ -129,7 +129,7 @@ const ITEM_TO_COLLECT = {
   '🌟':'star','🌠':'comet','🔮':'orb'
   '🍎':'apple', '🍓':'strawberry', '🌽':'corn', '🍇':'grape', '🥕':'carrot',
   '🍉':'watermelon', '🫐':'blueberry',
-  '🌰':'chestnut', '🥜':'peanut',
+  '🥜':'peanut',
   '🍑':'peach', '🥭':'mango',
   '🍋':'lemon', '🫒':'olive',
 };
